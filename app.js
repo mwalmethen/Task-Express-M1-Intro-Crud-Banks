@@ -1,8 +1,6 @@
 const express = require("express");
-
-const app = express();
-
 const accounts = require("./accounts");
+const app = express();
 
 app.use(express.json()); // solves req.body undefined!
 
@@ -46,29 +44,39 @@ app.post("/accounts", (req, res) => {
 // deleting an account
 app.delete("/accounts/:accountId", (req, res) => {
   const { accountId } = req.params;
-  const account = accounts.find((account) => {
-    account.id == accountId;
-    if (account) {
-      deleteAccount(accountId);
-      res.status(204).end();
-    } else {
-      res.status(404).json();
-    }
-  });
+  const account = accounts.find((account) => account.id == accountId);
+  if (account) {
+    deleteAccount(accountId);
+    res.status(204).end();
+  } else {
+    res.status(404).json();
+  }
 });
 
 // update an account
 app.put("/accounts/:accountId", (req, res) => {
   const { accountId } = req.params;
-  const account = accounts.find((account) => {
-    account.id == accountId;
-    if (account) {
-      const updatedAccount = updateAccount(account, req.body);
-      res.status(200).json(updatedAccount);
-    } else {
-      res.status(404).json();
-    }
-  });
+  const account = accounts.find((account) => account.id == accountId);
+
+  if (account) {
+    const updatedAccount = updateAccount(account, req.body);
+    res.status(200).json(updatedAccount);
+  } else {
+    res.status(404).json();
+  }
+});
+
+// get account by username
+app.get("/accounts/:accountUsername", (req, res) => {
+  const { accountUsername } = req.params;
+  const account = accounts.find(
+    (account) => account.username === accountUsername
+  );
+  if (account) {
+    res.status(200).json(account);
+  } else {
+    res.status(404).json();
+  }
 });
 app.listen(8000, () => {
   console.log("Hello this is my first server :)");

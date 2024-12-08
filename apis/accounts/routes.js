@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
-const accounts = require("../../accounts");
 const {
   listAccountsController,
   createNewAccountController,
@@ -21,8 +19,5 @@ router.delete("/:accountId", deleteAccountController);
 
 // update an account
 router.put("/:accountId", updateAccountController);
-
-// get account by username
-router.get("/:accountUsername", accountByUsername);
 
 module.exports = router;
